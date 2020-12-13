@@ -16,14 +16,14 @@ def welcome(message):
 
 	markup.add(item1)
 
-	bot.send_message(message.chat.id, 'Добро пожаловать, <b>{0.first_name}</b>!\nЯ - <b>{1.first_name}</b>, бот созданный чтобы играть в 🗿Камень ✂️Ножницы 📄Бумага.'.format(message.from_user, bot.get_me()), parse_mode='html', reply_markup=markup)
+	bot.send_message(message.chat.id, 'Добро пожаловать, <i><b>{0.first_name}</b></i>!\nЯ - <i><b>{1.first_name}</b></i>, бот созданный чтобы играть в 🗿Камень ✂️Ножницы 📄Бумага.'.format(message.from_user, bot.get_me()), parse_mode='html', reply_markup=markup)
 
 # User item picker
 @bot.message_handler(content_types=['text'])
 def play(message):
 	if message.chat.type == 'private':
 		if message.text == '🗿✂️📄 Давай сыграем! 🗿✂️📄':
-			markup = types.InlineKeyboardMarkup(row_width=2)
+			markup = types.InlineKeyboardMarkup(row_width=1)
 			item1 = types.InlineKeyboardButton('🗿 Камень', callback_data='rock')
 			item2 = types.InlineKeyboardButton('✂️ Ножницы', callback_data='scissors')
 			item3 = types.InlineKeyboardButton('📄 Бумага', callback_data='paper')
@@ -57,7 +57,9 @@ def callback_inline(call):
 				bot.send_message(call.message.chat.id, 'Ты проиграл! Я выбрал 🗿 камень, а 🗿 камень ломает ✂️ ножницы!')
 			else:
 				bot.send_message(call.message.chat.id, 'Ты выиграл!')
+				
 			bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='Хорошо, я выбрал чем буду ходить. Теперь твоя очередь:', reply_markup=None)
+			# bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
 			bot.answer_callback_query(callback_query_id=call.id, show_alert=False, text=(f'Ты выбрал {eng_to_rus.get(user_item)}.\n Бот выбрал {eng_to_rus.get(bot_item)}.'))
 
 	except Exception as e:
